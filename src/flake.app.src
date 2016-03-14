@@ -9,6 +9,6 @@
                   stdlib,
                   crypto
                  ]},
-  {mod, { flake_app, []}},
+  {mod, {flake_app, []}},
   {env, []}
  ]}.

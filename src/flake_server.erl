@@ -67,7 +67,7 @@ respond(X) ->
 %% ----------------------------------------------------------
 
 init([{worker_id, WorkerId}]) ->
-    {ok, #state{max_time=flake_util:curr_time_millis(), worker_id=WorkerId, sequence=0}}.
+    {ok, #state{max_time= flake_util:curr_time_millis(), worker_id=WorkerId, sequence=0}}.
 
 handle_call(get, _From, State = #state{max_time=MaxTime, worker_id=WorkerId, sequence=Sequence}) ->
     {Resp, S0} = get(flake_util:curr_time_millis(), MaxTime, WorkerId, Sequence, State),
@@ -98,7 +98,7 @@ code_change(_, State, _) -> {ok, State}.
 %% clock hasn't moved, increment sequence
 get(Time,Time,WorkerId,Seq0,State) ->
     Sequence = Seq0 + 1,
-    {{ok,flake_util:gen_id(Time,WorkerId,Sequence)},State#state{sequence=Sequence}};
+    {{ok, flake_util:gen_id(Time,WorkerId,Sequence)},State#state{sequence=Sequence}};
 %% clock has progressed, reset sequence
 get(CurrTime,MaxTime,WorkerId,_,State) when CurrTime > MaxTime ->
   {{ok, flake_util:gen_id(CurrTime, WorkerId, 0)}, State#state{max_time=CurrTime, sequence=0}};
